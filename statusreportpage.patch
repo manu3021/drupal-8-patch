@@ -1,0 +1,62 @@
+diff --git a/core/themes/stable/templates/admin/status-report.html.twig b/core/themes/stable/templates/admin/status-report.html.twig
+index 7f4c600..5e72d70 100644
+--- a/core/themes/stable/templates/admin/status-report.html.twig
++++ b/core/themes/stable/templates/admin/status-report.html.twig
+@@ -15,9 +15,11 @@
+  * @see template_preprocess_status_report()
+  */
+ #}
+-<table class="system-status-report">
+-  <tbody>
+-  {% for requirement in requirements %}
++ <table class="system-status-report">
++  <tbody> 
++    <span> general information </span>
++    {% for requirement in requirements[0:5] %}
++    
+     <tr class="system-status-report__entry system-status-report__entry--{{ requirement.severity_status }} color-{{ requirement.severity_status }}">
+       {% if requirement.severity_status in ['warning', 'error'] %}
+         <th class="system-status-report__status-title system-status-report__status-icon system-status-report__status-icon--{{ requirement.severity_status }}">
+@@ -34,6 +36,41 @@
+         {% endif %}
+       </td>
+     </tr>
++   
++  {% endfor %}
++
++  {% for requirement in requirements %}
++
++    <tr class="system-status-report__entry system-status-report__entry--{{ requirement.severity_status }} color-{{ requirement.severity_status }}">
++      {% if requirement.severity_status in ['warning', 'error'] %}
++        <th class="system-status-report__status-title system-status-report__status-icon system-status-report__status-icon--{{ requirement.severity_status }}">
++          <span class="visually-hidden">{{ requirement.severity_title }}</span>
++          <th class="system-status-report__status-title">
++            {{ requirement.title }}
++          </th>  
++        <td>
++        {{ requirement.value }}
++        {% if requirement.description %}
++          <div class="description">{{ requirement.description }}</div>
++        {% endif %}
++      </td>             
++      {% endif %}
++      
++    </tr>
++  {% endfor %}
++  {% for requirement in requirements[5:] %}
++    <tr class="system-status-report__entry system-status-report__entry--{{ requirement.severity_status }} color-{{ requirement.severity_status }}">
++      <th class="system-status-report__status-title">
++        {{ requirement.title }}
++      </th>
++      <td>
++        {{ requirement.value }}
++        {% if requirement.description %}
++          <div class="description">{{ requirement.description }}</div>
++        {% endif %}
++      </td>
++    </tr>
+   {% endfor %}
+   </tbody>
+ </table>
++ 
+\ No newline at end of file
